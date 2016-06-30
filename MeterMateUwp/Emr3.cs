@@ -313,11 +313,13 @@ namespace MeterMateUwp
                     if (reply[0] == 'F' && reply[1] == 't')
                     {
                         // Retrieve the temperature in Farenheit & convert to centigrade
-                        float temperature = reply.GetSingle(2).ToCentigrade();
+                        Temperature temperature = Temperature.CreateFromFahrenheit(reply.GetSingle(2));
 
-                        jsonBody = "\"Result\": 0, \"Temp\": " + temperature.ToString("n1");
+                        //float temperature = reply.GetSingle(2).ToCentigrade();
 
-                        RealtimeTemperature.Text = temperature.ToString("n1");
+                        jsonBody = "\"Result\": 0, \"Temp\": " + temperature.Celsius.ToString("n1"); // temperature.ToString("n1");
+
+                        RealtimeTemperature.Text = temperature.Celsius.ToString("n1"); // temperature.ToString("n1");
                     }
                 }
             }
@@ -421,9 +423,11 @@ namespace MeterMateUwp
                         builder.AppendFormat("\"volume\":{0},", reply.GetDouble(72));
 
                         // Retrieve the temperature in Farenheit & convert to Centigrade
-                        float temperature = reply.GetSingle(80).ToCentigrade();                    
+                        Temperature temperature = Temperature.CreateFromFahrenheit(reply.GetSingle(80));
 
-                        builder.AppendFormat("\"temperature\":{0},", temperature.ToString("n1"));
+                        //float temperature = reply.GetSingle(80).ToCentigrade();                    
+
+                        builder.AppendFormat("\"temperature\":{0},", temperature.Celsius.ToString("n1")); // temperature.ToString("n1"));
 
                         // Flags.
                         builder.AppendFormat("\"flags\":{0}", reply.GetUnsignedShort(126));
