@@ -315,11 +315,9 @@ namespace MeterMateUwp
                         // Retrieve the temperature in Farenheit & convert to centigrade
                         Temperature temperature = Temperature.CreateFromFahrenheit(reply.GetSingle(2));
 
-                        //float temperature = reply.GetSingle(2).ToCentigrade();
+                        jsonBody = "\"Result\": 0, \"Temp\": " + temperature.Celsius.ToString("n1"); 
 
-                        jsonBody = "\"Result\": 0, \"Temp\": " + temperature.Celsius.ToString("n1"); // temperature.ToString("n1");
-
-                        RealtimeTemperature.Text = temperature.Celsius.ToString("n1"); // temperature.ToString("n1");
+                        RealtimeTemperature.Text = temperature.Celsius.ToString("n1"); 
                     }
                 }
             }
@@ -425,9 +423,7 @@ namespace MeterMateUwp
                         // Retrieve the temperature in Farenheit & convert to Centigrade
                         Temperature temperature = Temperature.CreateFromFahrenheit(reply.GetSingle(80));
 
-                        //float temperature = reply.GetSingle(80).ToCentigrade();                    
-
-                        builder.AppendFormat("\"temperature\":{0},", temperature.Celsius.ToString("n1")); // temperature.ToString("n1"));
+                        builder.AppendFormat("\"temperature\":{0},", temperature.Celsius.ToString("n1"));
 
                         // Flags.
                         builder.AppendFormat("\"flags\":{0}", reply.GetUnsignedShort(126));
