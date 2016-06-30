@@ -1,1 +1,0 @@
-C:\Users\Alan\Documents\Visual Studio 2015\Projects\MeterMateUwp\MeterMateUwp\MeterMateUwp.csproj;x86
