@@ -43,7 +43,7 @@ namespace MeterMateUwp
             // Find all the serial ports
             var devices = await DeviceInformation.FindAllAsync(deviceSelector);
 
-            foreach(var device in devices)
+            foreach (var device in devices)
             {
                 if (string.Compare(device.Name, portName, true) == 0)
                 {
@@ -82,13 +82,6 @@ namespace MeterMateUwp
             Pda pda = new Pda(bluetoothPort, txtStatus);
 
             pda.Start();
-        }
-
-        private async void SendMessage(SerialDevice port, string json)
-        {
-            Writer.WriteString(json);
-
-            await Writer.StoreAsync();
         }
     }
 }
