@@ -21,19 +21,18 @@ namespace MeterMateUwp
 
         }
 
-        public Pda(SerialDevice port, TextBlock tb)
+        public Pda(SerialDevice port, MainPage page)
         {
             SerialPort = port;
 
-            Status = tb;
+            ParentPage = page;
 
             ReadCancellationTokenSource = new CancellationTokenSource();
         }
 
-        private TextBlock Status
+        private static MainPage ParentPage
         {
-            get;
-            set;
+            get;set;
         }
 
         public static SerialDevice SerialPort
@@ -111,7 +110,7 @@ namespace MeterMateUwp
         {
             try
             {
-                Status.Text = string.Empty;
+                ParentPage.Status.Text = string.Empty;
 
                 StringBuilder message = new StringBuilder();
 
@@ -130,7 +129,7 @@ namespace MeterMateUwp
                             // End of message
                             await ProcessMessage(message.ToString());
                             message.AppendLine();
-                            Status.Text += message.ToString();
+                            ParentPage.Status.Text += message.ToString();
                             continue;
 
                         default:
@@ -212,8 +211,10 @@ namespace MeterMateUwp
                                 //SystemUpdate.AccessBootloader();
                                 break;
 
-                            case "Gv":  
+                            case "Gv":
                                 // Get Version.
+                                ParentPage.ResetTimer();
+
                                 json = "{\"Command\": \"Gv\", \"Result\": 0, \"Version\": " + MainPage.MajorVersion + "." + MainPage.MinorVersion + ", \"Model\": \"" + MainPage.Model + "\"}";
                                 break;
 
@@ -247,8 +248,9 @@ namespace MeterMateUwp
                                 json = await Emr3.GetTranCount();
                                 break;
 
-                            case "Gtr":  
+                            case "Gtr":
                                 // Get transaction record
+                                ParentPage.ResetTimer();
                                 if (parts.Length == 2)
                                 {
                                     json = await Emr3.GetTran(parts[1]);
@@ -263,8 +265,10 @@ namespace MeterMateUwp
                                 }
                                 break;
 
-                            case "Sp":  
+                            case "Sp":
                                 // Set preset.
+                                ParentPage.ResetTimer();
+
                                 if (parts.Length == 2)
                                 {
                                     json = await Emr3.SetPreset(parts[1]);
@@ -272,6 +276,8 @@ namespace MeterMateUwp
                                 break;
 
                             case "NOP":
+                                ParentPage.ResetTimer();
+
                                 json = "{\"Command\": \"NOP\", \"Result\": 0}";
                                 break;
 

@@ -107,6 +107,9 @@
     <Compile Include="Pda.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Temperature.cs" />
+    <Compile Include="Thermometer.xaml.cs">
+      <DependentUpon>Thermometer.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -115,6 +118,10 @@
     <None Include="MeterMateUwp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\BluetoothDisabled.png" />
+    <Content Include="Assets\BluetoothEnabled.png" />
+    <Content Include="Assets\TickBW128.png" />
+    <Content Include="Assets\TickColour128.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -132,6 +139,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Thermometer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

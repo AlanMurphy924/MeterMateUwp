@@ -9,8 +9,8 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-        <StackPanel Margin="10,50,10,50" Orientation="Vertical" >
-            
+        <StackPanel Margin="10,50,1186,50" Orientation="Vertical" >
+
             <StackPanel Orientation="Horizontal" >
                 <TextBlock TextAlignment="Left" Text="Temperature" Margin="100, 0, 0, 0" Width="100"/>
                 <TextBlock TextAlignment="Left" Text=":" Margin="10, 0, 0, 0" Width="25"/>
@@ -21,13 +21,31 @@
             <StackPanel Orientation="Horizontal" >
                 <TextBlock TextAlignment="Left" Text="Pump Litres" Margin="100, 0, 0, 0" Width="100"/>
                 <TextBlock TextAlignment="Left" Text=":" Margin="10, 0, 0, 0" Width="25"/>
-                <TextBlock x:Name="txtRealtimeLitres" TextAlignment="Right" Text="" Margin="10, 0, 0, 0" Width="50"/>
+                <TextBlock x:Name="txtRealtimeLitresOld" TextAlignment="Right" Text="" Margin="10, 0, 0, 0" Width="50"/>
             </StackPanel>
-
-            <TextBlock x:Name="txtStatus" HorizontalAlignment="Left" Margin="116,55,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="159" Width="722"/>
+            <TextBlock x:Name="txtStatus" HorizontalAlignment="Left" Margin="116,55,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="159" Width="527"/>
         </StackPanel>
-     
 
+        <local:Thermometer x:Name="fuelTemperature" MinimumTemperature="0.0" MaximumTemperature="40.0" Temperature="15.0" HorizontalAlignment="Right" Width="169" Margin="0,50,75,50" />
+
+        <TextBlock x:Name="txtPreset" HorizontalAlignment="Left" TextAlignment="Right" Margin="1119,229,0,0" TextWrapping="Wrap" Text="Preset" VerticalAlignment="Top" Height="118" Width="359" FontSize="72"/>
+        <TextBlock x:Name="txtRealtimeLitres" HorizontalAlignment="Left" TextAlignment="Right" Margin="800,352,0,0" TextWrapping="Wrap" Text="Delivered" VerticalAlignment="Top" Height="185" Width="678" FontSize="144"/>
+
+        <StackPanel Orientation="Vertical" Margin="890,542,347,319">
+            <StackPanel Orientation="Horizontal">
+                <Image x:Name="imgFlowing" HorizontalAlignment="Left" Height="70" VerticalAlignment="Top" Width="70" Source="Assets/TickColour128.png" Visibility="Collapsed"/>
+                <Image x:Name="imgFlowingDisabled" HorizontalAlignment="Left" Height="70" VerticalAlignment="Top" Width="70" Source="Assets/TickBW128.png"/>
+                <TextBlock Text="Product Flowing" FontSize="48" Margin="20,0,0,0" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Image x:Name="imgDelivering" HorizontalAlignment="Left" Height="70" VerticalAlignment="Top" Width="70" Source="Assets/TickColour128.png" Visibility="Collapsed"/>
+                <Image x:Name="imgDeliveringDisabled" HorizontalAlignment="Left" Height="70" VerticalAlignment="Top" Width="70" Source="Assets/TickBW128.png"/>
+                <TextBlock Text="Delivering" FontSize="48" Margin="20,0,0,0" />
+            </StackPanel>
+        </StackPanel>
+
+        <Image x:Name="imageBluetoothDisabled" HorizontalAlignment="Left" Height="100" Margin="890,82,0,0" VerticalAlignment="Top" Width="74" Source="Assets/BluetoothDisabled.png"/>
+        <Image x:Name="imageBluetoothEnabled" HorizontalAlignment="Left" Height="100" Margin="890,82,0,0" VerticalAlignment="Top" Width="74" Source="Assets/BluetoothEnabled.png"/>
 
     </Grid>
 </Page>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Devices.SerialCommunication;
@@ -54,14 +55,101 @@ namespace MeterMateUwp
             return null;
         }
 
-        DataWriter Writer
+        public Thermometer Thermometer
         {
-            get;
-            set;
+            get
+            {
+                return this.fuelTemperature;
+            }
+        }
+
+        public TextBlock PresetLitres
+        {
+            get
+            {
+                return this.txtPreset;
+            }
+        }
+
+        public TextBlock RealtimeLitres
+        {
+            get
+            {
+                return this.txtRealtimeLitres;
+            }
+        }
+
+        public TextBlock Status
+        {
+            get
+            {
+                return txtStatus;
+            }
+        }
+
+        public TextBlock RealtimeTemperature
+        {
+            get
+            {
+                return txtTemperature;
+            }
+        }
+
+        public Image ProductFlowing
+        {
+            get
+            {
+                return imgFlowing;
+            }
+        }
+
+        public Image ProductNotFlowing
+        {
+            get
+            {
+                return imgFlowingDisabled;
+            }
+        }
+
+        public Image ProductDelivering
+        {
+            get
+            {
+                return imgDelivering;
+            }
+        }
+
+        public Image ProductNotDelivering
+        {
+            get
+            {
+                return imgDeliveringDisabled;
+            }
+        }
+
+        public void ResetTimer()
+        {
+            imageBluetoothDisabled.Visibility = Visibility.Collapsed;
+            imageBluetoothEnabled.Visibility = Visibility.Visible;
+
+            timer.Change(12000, 12000);
+        }
+
+        private Timer timer;
+
+        private async void TimerExpired(object state)
+        {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                imageBluetoothDisabled.Visibility = Visibility.Visible;
+                imageBluetoothEnabled.Visibility = Visibility.Collapsed;
+            });
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            timer = new Timer(TimerExpired, null, 0, 12000);
+
             SerialDevice meterMatePort = null;
             SerialDevice bluetoothPort = null;
 
@@ -75,11 +163,11 @@ namespace MeterMateUwp
                 txtStatus.Text = "Could not obtain serial port.";
             }
 
-            Emr3 emr3 = new Emr3(meterMatePort, txtTemperature, txtRealtimeLitres, txtStatus);
+            Emr3 emr3 = new Emr3(meterMatePort, this);
 
             emr3.Start();
 
-            Pda pda = new Pda(bluetoothPort, txtStatus);
+            Pda pda = new Pda(bluetoothPort, this);
 
             pda.Start();
         }

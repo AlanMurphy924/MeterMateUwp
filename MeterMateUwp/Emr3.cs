@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Windows.Devices.SerialCommunication;
 using Windows.Storage;
 using Windows.Storage.Streams;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace MeterMateUwp
@@ -35,38 +36,23 @@ namespace MeterMateUwp
 
         }
 
-        public Emr3(SerialDevice port, TextBlock temperature, TextBlock realtimeLitres,  TextBlock tb)
+        public Emr3(SerialDevice port, MainPage page)
         {
             SerialPort = port;
 
-            RealtimeLitres = realtimeLitres;
-            RealtimeTemperature = temperature;
-            Status = tb;
-
+            ParentPage = page;
+ 
             ReadCancellationTokenSource = new CancellationTokenSource();
+        }
+
+        private static MainPage ParentPage
+        {
+            get;set;
         }
 
         public static bool IsRunning()
         {
             return isRunning;
-        }
-
-        private static TextBlock Status
-        {
-            get;
-            set;
-        }
-
-        private static TextBlock RealtimeLitres
-        {
-            get;
-            set;
-        }
-
-        private static TextBlock RealtimeTemperature
-        {
-            get;
-            set;
         }
 
         public static SerialDevice SerialPort
@@ -179,13 +165,19 @@ namespace MeterMateUwp
                     // Meter reply is Fc followed by 4 byte float.
                     if (reply[0] == 'F' && reply[1] == 'c')
                     {
-                        jsonBody = string.Format("\"Result\": 0, \"Litres\": {0}", (int)reply.GetSingle(2));
+                        int presetLitres = (int)reply.GetSingle(2);
+
+                        jsonBody = string.Format("\"Result\": 0, \"Litres\": {0}", presetLitres);
+
+                        ParentPage.PresetLitres.Text = presetLitres.ToString("#,##0");
+                        
+                        //PresetLitres.Text = ;
                     }
                 }
             }
             catch (Exception ex)
             {
-                Status.Text = string.Format("Emr3.GetPreset: Exception {0}", ex.Message);
+                ParentPage.Status.Text = string.Format("Emr3.GetPreset: Exception {0}", ex.Message);
             }
 
             return CreateCommandResponse("Gpl", jsonBody);
@@ -215,7 +207,7 @@ namespace MeterMateUwp
 
                         jsonBody = "\"Result\": 0, \"Litres\": " + litres;
 
-                        RealtimeLitres.Text = litres.ToString();
+                        ParentPage.RealtimeLitres.Text = litres.ToString("#,##0");
                     }
                 }
             }
@@ -276,7 +268,31 @@ namespace MeterMateUwp
                         }
 
                         InDeliveryMode = newInDeliveryMode;
+
+                        if (InDeliveryMode)
+                        {
+                            ParentPage.ProductDelivering.Visibility = Visibility.Visible;
+                            ParentPage.ProductNotDelivering.Visibility = Visibility.Collapsed;
+                        }
+                        else
+                        {
+                            ParentPage.ProductDelivering.Visibility = Visibility.Collapsed;
+                            ParentPage.ProductNotDelivering.Visibility = Visibility.Visible;
+                        }
+
                         ProductFlowing = newProductFlowing;
+
+                        if (ProductFlowing)
+                        {
+                            ParentPage.ProductFlowing.Visibility = Visibility.Visible;
+                            ParentPage.ProductNotFlowing.Visibility = Visibility.Collapsed;
+                        }
+                        else
+                        {
+                            ParentPage.ProductFlowing.Visibility = Visibility.Collapsed;
+                            ParentPage.ProductNotFlowing.Visibility = Visibility.Visible;
+                        }
+
                         MeterError = ((reply[2] & 0x40) == 0x40);
                         InCalibration = ((reply[2] & 0x80) == 0x80);
 
@@ -317,7 +333,9 @@ namespace MeterMateUwp
 
                         jsonBody = "\"Result\": 0, \"Temp\": " + temperature.Celsius.ToString("n1"); 
 
-                        RealtimeTemperature.Text = temperature.Celsius.ToString("n1"); 
+                        ParentPage.RealtimeTemperature.Text = temperature.Celsius.ToString("n1");
+
+                        ParentPage.Thermometer.Temperature = temperature.Celsius;
                     }
                 }
             }
