@@ -7,7 +7,7 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="48f3eef6-1996-402f-9b58-5d5f7e957033"
+    Name="MeterMateUwp"
     Publisher="CN=Alan"
     Version="1.0.0.0" />
 

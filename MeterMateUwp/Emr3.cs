@@ -123,7 +123,7 @@ namespace MeterMateUwp
                 }
 
                 // A message is sent every 100 ms
-                await Task.Delay(TimeSpan.FromMilliseconds(100));
+                await Task.Delay(TimeSpan.FromMilliseconds(50));
             }
         }
 

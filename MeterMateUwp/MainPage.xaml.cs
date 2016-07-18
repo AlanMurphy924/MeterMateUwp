@@ -131,6 +131,7 @@ namespace MeterMateUwp
         {
             imageBluetoothDisabled.Visibility = Visibility.Collapsed;
             imageBluetoothEnabled.Visibility = Visibility.Visible;
+            tbHandsetConnected.Visibility = Visibility.Visible;
 
             timer.Change(12000, 12000);
         }
@@ -143,11 +144,14 @@ namespace MeterMateUwp
             {
                 imageBluetoothDisabled.Visibility = Visibility.Visible;
                 imageBluetoothEnabled.Visibility = Visibility.Collapsed;
+                tbHandsetConnected.Visibility = Visibility.Collapsed;
             });
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            tbHandsetConnected.Visibility = Visibility.Collapsed;
+
             timer = new Timer(TimerExpired, null, 0, 12000);
 
             SerialDevice meterMatePort = null;

@@ -133,7 +133,7 @@ namespace MeterMateUwp
             FontWeight weight = new FontWeight();
             weight.Weight = 900;
 
-            CanvasTextFormat format = new CanvasTextFormat { FontSize = 26f, FontWeight = weight, WordWrapping = CanvasWordWrapping.NoWrap, };
+            CanvasTextFormat format = new CanvasTextFormat { FontSize = 20f, FontWeight = weight, WordWrapping = CanvasWordWrapping.NoWrap, };
 
             CanvasTextLayout textLayout = new CanvasTextLayout(args.DrawingSession, text, format, 0.0f, 0.0f);
 
