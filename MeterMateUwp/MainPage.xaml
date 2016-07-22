@@ -5,7 +5,7 @@
     xmlns:local="using:MeterMateUwp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Loaded="Page_Loaded" Width="800" Height="481">
+    mc:Ignorable="d" Loaded="Page_Loaded" Width="800" Height="480">
 
     <Grid >
         <Grid.Background>
@@ -15,29 +15,31 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <StackPanel Margin="10,50,1321,50" Orientation="Vertical" Visibility="Collapsed" >
+        <Grid Margin="30,105,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="390" Height="Auto">
 
-            <StackPanel Orientation="Horizontal" >
-                <TextBlock TextAlignment="Left" Text="Temperature" Margin="100, 0, 0, 0" Width="100"/>
-                <TextBlock TextAlignment="Left" Text=":" Margin="10, 0, 0, 0" Width="25"/>
-                <TextBlock x:Name="txtTemperature" TextAlignment="Right" Text="34.6" Margin="10, 0, 0, 0" Width="50"/>
-                <TextBlock TextAlignment="Left" Text="°C" Margin="10, 0, 0, 0" Width="50"/>
-            </StackPanel>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-            <StackPanel Orientation="Horizontal" >
-                <TextBlock TextAlignment="Left" Text="Pump Litres" Margin="100, 0, 0, 0" Width="100"/>
-                <TextBlock TextAlignment="Left" Text=":" Margin="10, 0, 0, 0" Width="25"/>
-                <TextBlock x:Name="txtRealtimeLitresOld" TextAlignment="Right" Text="" Margin="10, 0, 0, 0" Width="50"/>
-            </StackPanel>
-            <TextBlock x:Name="txtStatus" HorizontalAlignment="Left" Margin="116,55,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="159" Width="527"/>
-        </StackPanel>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Preset" VerticalAlignment="Center" FontSize="36" HorizontalAlignment="Left" TextAlignment="Left" Padding="0,0,30,0"/>
+            <TextBlock Grid.Column="1" Grid.Row="0" x:Name="txtPreset" TextAlignment="Right"  TextWrapping="Wrap" Text="0" VerticalAlignment="Center" FontSize="36" HorizontalAlignment="Right" />
+            <TextBlock Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" TextAlignment="Center" Text="L" FontSize="36" Padding="30,0,0,0" HorizontalAlignment="Right"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Delivered" VerticalAlignment="Center" FontSize="36" HorizontalAlignment="Left" TextAlignment="Left" Padding="0,0,30,0"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" x:Name="txtRealtimeLitres" TextAlignment="Right"  TextWrapping="Wrap" Text="0" VerticalAlignment="Center" FontSize="36" HorizontalAlignment="Right"/>
+            <TextBlock Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" TextAlignment="Right" Text="L" FontSize="36" Padding="30,0,0,0" HorizontalAlignment="Right"/>
+        </Grid>
 
         <local:Thermometer x:Name="fuelTemperature" MinimumTemperature="0.0" MaximumTemperature="40.0" Temperature="15.0" HorizontalAlignment="Right" Width="113" Margin="0,20,40,20" />
 
-        <TextBlock x:Name="txtPreset" TextAlignment="Right" Margin="0,114,225,0" TextWrapping="Wrap" Text="Preset" VerticalAlignment="Top" Height="68" FontSize="36" HorizontalAlignment="Right" Width="179" RenderTransformOrigin="0.524,-0.094"/>
-        <TextBlock x:Name="txtRealtimeLitres" TextAlignment="Right" Margin="0,187,225,0" TextWrapping="Wrap" Text="Delivered" VerticalAlignment="Top" Height="84" FontSize="48" HorizontalAlignment="Right" Width="231"/>
-
-        <StackPanel CornerRadius="20" Background="Wheat" BorderBrush="Black" BorderThickness="2" Orientation="Vertical" Margin="0,276,225,0" VerticalAlignment="Top" HorizontalAlignment="Right">
+        <StackPanel CornerRadius="20" Background="Wheat" BorderBrush="Black" BorderThickness="2" Orientation="Vertical" Margin="30,266,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
             <StackPanel Padding="5" Orientation="Horizontal">
                 <Image x:Name="imgFlowing" HorizontalAlignment="Right" Height="35" VerticalAlignment="Center" Width="35" Source="Assets/TickColour128.png" Visibility="Collapsed"/>
                 <Image x:Name="imgFlowingDisabled" HorizontalAlignment="Right" Height="35" VerticalAlignment="Center" Width="35" Source="Assets/TickBW128.png"/>
@@ -51,7 +53,7 @@
         </StackPanel>
 
 
-        <StackPanel HorizontalAlignment="Right" Height="56" Margin="0,48,316,0" VerticalAlignment="Top" Width="316" Orientation="Horizontal">
+        <StackPanel HorizontalAlignment="Left" Height="56" Margin="30,30,0,0" VerticalAlignment="Top" Width="316" Orientation="Horizontal">
             <Image x:Name="imageBluetoothDisabled" HorizontalAlignment="Right" Height="50" Margin="0,0,0,0" VerticalAlignment="Center" Width="37" Source="Assets/BluetoothDisabled.png"/>
             <Image x:Name="imageBluetoothEnabled" Height="50" Margin="0,0,0,0" VerticalAlignment="Center" Source="Assets/BluetoothEnabled.png" RenderTransformOrigin="-0.91,0.345" HorizontalAlignment="Right" Width="37"/>
             <TextBlock x:Name="tbHandsetConnected" Text="Handset Connected" Margin="20,0,0,0" Visibility="Visible" FontSize="24" VerticalAlignment="Center" />

@@ -110,7 +110,7 @@ namespace MeterMateUwp
         {
             try
             {
-                ParentPage.Status.Text = string.Empty;
+                //ParentPage.Status.Text = string.Empty;
 
                 StringBuilder message = new StringBuilder();
 
@@ -129,7 +129,7 @@ namespace MeterMateUwp
                             // End of message
                             await ProcessMessage(message.ToString());
                             message.AppendLine();
-                            ParentPage.Status.Text += message.ToString();
+                            //ParentPage.Status.Text += message.ToString();
                             continue;
 
                         default:

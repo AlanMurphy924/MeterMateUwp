@@ -170,14 +170,12 @@ namespace MeterMateUwp
                         jsonBody = string.Format("\"Result\": 0, \"Litres\": {0}", presetLitres);
 
                         ParentPage.PresetLitres.Text = presetLitres.ToString("#,##0");
-                        
-                        //PresetLitres.Text = ;
                     }
                 }
             }
             catch (Exception ex)
             {
-                ParentPage.Status.Text = string.Format("Emr3.GetPreset: Exception {0}", ex.Message);
+                //ParentPage.Status.Text = string.Format("Emr3.GetPreset: Exception {0}", ex.Message);
             }
 
             return CreateCommandResponse("Gpl", jsonBody);
@@ -207,7 +205,10 @@ namespace MeterMateUwp
 
                         jsonBody = "\"Result\": 0, \"Litres\": " + litres;
 
-                        ParentPage.RealtimeLitres.Text = litres.ToString("#,##0");
+                        if (ParentPage.ProductDelivering.Visibility == Visibility.Visible)
+                        {
+                            ParentPage.RealtimeLitres.Text = litres.ToString("#,##0");
+                        }
                     }
                 }
             }
@@ -333,7 +334,7 @@ namespace MeterMateUwp
 
                         jsonBody = "\"Result\": 0, \"Temp\": " + temperature.Celsius.ToString("n1"); 
 
-                        ParentPage.RealtimeTemperature.Text = temperature.Celsius.ToString("n1");
+                        //ParentPage.RealtimeTemperature.Text = temperature.Celsius.ToString("n1");
 
                         ParentPage.Thermometer.Temperature = temperature.Celsius;
                     }
@@ -585,6 +586,8 @@ namespace MeterMateUwp
 
                             await SendMessage(message4);
                         }
+
+                        ParentPage.RealtimeLitres.Text = "0";
                     }
                 }
             }

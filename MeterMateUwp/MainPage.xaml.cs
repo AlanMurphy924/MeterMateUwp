@@ -79,22 +79,6 @@ namespace MeterMateUwp
             }
         }
 
-        public TextBlock Status
-        {
-            get
-            {
-                return txtStatus;
-            }
-        }
-
-        public TextBlock RealtimeTemperature
-        {
-            get
-            {
-                return txtTemperature;
-            }
-        }
-
         public Image ProductFlowing
         {
             get
@@ -164,7 +148,7 @@ namespace MeterMateUwp
             }
             catch (NullReferenceException ex)
             {
-                txtStatus.Text = "Could not obtain serial port.";
+                //txtStatus.Text = "Could not obtain serial port.";
             }
 
             Emr3 emr3 = new Emr3(meterMatePort, this);
