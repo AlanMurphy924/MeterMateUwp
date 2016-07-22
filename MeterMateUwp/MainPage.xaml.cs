@@ -134,6 +134,9 @@ namespace MeterMateUwp
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            // Display the version
+            txtVersion.Text = string.Format("MeterMate {0} V{1}.{2}", Model, MajorVersion, MinorVersion);
+
             tbHandsetConnected.Visibility = Visibility.Collapsed;
 
             timer = new Timer(TimerExpired, null, 0, 12000);

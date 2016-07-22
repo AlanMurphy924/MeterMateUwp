@@ -59,5 +59,7 @@
             <TextBlock x:Name="tbHandsetConnected" Text="Handset Connected" Margin="20,0,0,0" Visibility="Visible" FontSize="24" VerticalAlignment="Center" />
         </StackPanel>
 
+        <TextBlock x:Name="txtVersion" Margin="30,0,0,30" Text="Version" FontSize="24" Height="Auto" Width="356" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+
     </Grid>
 </Page>
