@@ -27,8 +27,8 @@ namespace MeterMateUwp
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public const int MajorVersion = 1;
-        public const int MinorVersion = 3;
+        public const int MajorVersion = 2;
+        public const int MinorVersion = 0;
         public const string Model = "EMR3";
 
         public MainPage()
