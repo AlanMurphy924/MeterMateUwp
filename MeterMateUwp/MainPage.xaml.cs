@@ -39,19 +39,26 @@ namespace MeterMateUwp
         private async Task<SerialDevice> GetSerialPort(string portName)
         {
             // Get the device selector for serial ports
-            var deviceSelector = SerialDevice.GetDeviceSelector(); // portName);
+            var deviceSelector = SerialDevice.GetDeviceSelector();
 
             // Find all the serial ports
             var devices = await DeviceInformation.FindAllAsync(deviceSelector);
 
-            foreach (var device in devices)
+            // If the are any devices found, attempt to find the one required
+            if (devices.Count > 0)
             {
-                if (string.Compare(device.Name, portName, true) == 0)
+                // Loop through all discovered serial devices
+                foreach (var device in devices)
                 {
-                    return await SerialDevice.FromIdAsync(device.Id);
+                    // If the device name matches return the serial device
+                    if (string.Compare(device.Name, portName, true) == 0)
+                    {
+                        return await SerialDevice.FromIdAsync(device.Id);
+                    }
                 }
             }
 
+            // Serial Device was not found so return null
             return null;
         }
 
@@ -113,10 +120,12 @@ namespace MeterMateUwp
 
         public void ResetTimer()
         {
+            // Display that the handset is connected
             imageBluetoothDisabled.Visibility = Visibility.Collapsed;
             imageBluetoothEnabled.Visibility = Visibility.Visible;
             tbHandsetConnected.Visibility = Visibility.Visible;
 
+            // set the time to trigger every 12 seconds
             timer.Change(12000, 12000);
         }
 
@@ -124,6 +133,7 @@ namespace MeterMateUwp
 
         private async void TimerExpired(object state)
         {
+            // When the timer expires show that the hadset is no longer connected (by Bluetooth)
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 imageBluetoothDisabled.Visibility = Visibility.Visible;
@@ -137,8 +147,13 @@ namespace MeterMateUwp
             // Display the version
             txtVersion.Text = string.Format("MeterMate {0} V{1}.{2}", Model, MajorVersion, MinorVersion);
 
+            // Display the Copyright notice
+            txtCopyright.Text = "Swiftsoft - Copyright © 2016";
+
+            // Show that the handset by default is not connected
             tbHandsetConnected.Visibility = Visibility.Collapsed;
 
+            // Create timer to expire immediately and then every 12 seconds thereafter
             timer = new Timer(TimerExpired, null, 0, 12000);
 
             SerialDevice meterMatePort = null;
@@ -154,10 +169,12 @@ namespace MeterMateUwp
                 //txtStatus.Text = "Could not obtain serial port.";
             }
 
+            // Start the EMR3 thread
             Emr3 emr3 = new Emr3(meterMatePort, this);
 
             emr3.Start();
 
+            // Start the PDA thread
             Pda pda = new Pda(bluetoothPort, this);
 
             pda.Start();
