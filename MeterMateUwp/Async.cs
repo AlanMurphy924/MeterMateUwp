@@ -15,7 +15,11 @@ namespace MeterMateUwp
 
         public AsyncSemaphore(int initialCount)
         {
-            if (initialCount < 0) throw new ArgumentOutOfRangeException("initialCount");
+            if (initialCount < 0)
+            {
+                throw new ArgumentOutOfRangeException("initialCount");
+            }
+
             m_currentCount = initialCount;
         }
 
@@ -40,15 +44,23 @@ namespace MeterMateUwp
         public void Release()
         {
             TaskCompletionSource<bool> toRelease = null;
+
             lock (m_waiters)
             {
                 if (m_waiters.Count > 0)
+                {
                     toRelease = m_waiters.Dequeue();
+                }
                 else
+                {
                     ++m_currentCount;
+                }
             }
+
             if (toRelease != null)
+            {
                 toRelease.SetResult(true);
+            }
         }
     }
 
@@ -66,6 +78,7 @@ namespace MeterMateUwp
         public Task<Releaser> LockAsync()
         {
             var wait = m_semaphore.WaitAsync();
+
             return wait.IsCompleted ?
                 m_releaser :
                 wait.ContinueWith((_, state) => new Releaser((AsyncLock)state),
@@ -82,7 +95,9 @@ namespace MeterMateUwp
             public void Dispose()
             {
                 if (m_toRelease != null)
+                {
                     m_toRelease.m_semaphore.Release();
+                }
             }
         }
     }
