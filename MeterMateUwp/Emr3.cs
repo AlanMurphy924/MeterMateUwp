@@ -119,7 +119,6 @@ namespace MeterMateUwp
                 }
                 catch (Exception)
                 {
-                    //Debug.Print("EMR3: Exception " + ex.Message);
                 }
 
                 // A message is sent every 100 ms
@@ -169,13 +168,13 @@ namespace MeterMateUwp
 
                         jsonBody = string.Format("\"Result\": 0, \"Litres\": {0}", presetLitres);
 
+                        // Update the preset litres displayed on screen
                         ParentPage.PresetLitres.Text = presetLitres.ToString("#,##0");
                     }
                 }
             }
             catch (Exception)
             {
-                //ParentPage.Status.Text = string.Format("Emr3.GetPreset: Exception {0}", ex.Message);
             }
 
             return CreateCommandResponse("Gpl", jsonBody);
@@ -205,8 +204,10 @@ namespace MeterMateUwp
 
                         jsonBody = "\"Result\": 0, \"Litres\": " + litres;
 
+                        // Only update the pumped litres if product is actually being pumped
                         if (ParentPage.ProductDelivering.Visibility == Visibility.Visible)
                         {
+                            // Update the realtime litres displayed on screen
                             ParentPage.RealtimeLitres.Text = litres.ToString("#,##0");
                         }
                     }
@@ -334,8 +335,7 @@ namespace MeterMateUwp
 
                         jsonBody = "\"Result\": 0, \"Temp\": " + temperature.Celsius.ToString("n1"); 
 
-                        //ParentPage.RealtimeTemperature.Text = temperature.Celsius.ToString("n1");
-
+                        // Update the thermometer control with the temperature in Celsius
                         ParentPage.Thermometer.Temperature = temperature.Celsius;
                     }
                 }
@@ -482,10 +482,8 @@ namespace MeterMateUwp
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                string message = ex.Message;
-                //Debug.Print("EMR3.GetTranCount: Exception " + ex.Message);
             }
 
             return CreateCommandResponse("Gtc", jsonBody); 
@@ -587,6 +585,7 @@ namespace MeterMateUwp
                             await SendMessage(message4);
                         }
 
+                        // Preset has just been set, therefore set the pumped litres to zero
                         ParentPage.RealtimeLitres.Text = "0";
                     }
                 }
@@ -601,6 +600,7 @@ namespace MeterMateUwp
 
         private static void AddCharacterToBuffer(IList<byte> buffer, byte b)
         {
+            // If this is an ESCAPE or DELIMITER character it needs to be escaped
             if (b == ESCAPE_CHAR || b == DELIMITER)
             {
                 buffer.Add(ESCAPE_CHAR);
@@ -700,8 +700,6 @@ namespace MeterMateUwp
 
                 throw;
             }
-
-            // Debug.WriteLine(string.Format("Response length : {0}", readBuffer.Length));
 
             return DecodeMessage(readBuffer).ToArray();
         }
