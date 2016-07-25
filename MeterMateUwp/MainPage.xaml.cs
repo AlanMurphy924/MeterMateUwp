@@ -164,7 +164,7 @@ namespace MeterMateUwp
                 meterMatePort = await GetSerialPort("usb serial converter"); // "COM12");
                 bluetoothPort = await GetSerialPort("minwinpc"); // "COM21");
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
                 //txtStatus.Text = "Could not obtain serial port.";
             }

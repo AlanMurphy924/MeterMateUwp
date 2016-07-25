@@ -1,4 +1,5 @@
-﻿using Microsoft.Graphics.Canvas.Text;
+﻿using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Text;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace MeterMateUwp
 
         public Thermometer()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         public double MinimumTemperature
@@ -59,16 +60,17 @@ namespace MeterMateUwp
 
         private static void OnTemperatureChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            int n = 0;
         }
 
         private void OnTemperatureChanged(DependencyPropertyChangedEventArgs e)
         {
-            int n = 1;
         }
 
-        private void CanvasControl_Draw(CanvasControl sender, Microsoft.Graphics.Canvas.UI.Xaml.CanvasDrawEventArgs args)
+        private void CanvasControl_Draw(CanvasControl sender, CanvasDrawEventArgs args)
         {
+            // Get the canvas drawing session
+            CanvasDrawingSession canvas = args.DrawingSession;
+     
             double actualWidth = sender.ActualWidth;
             double actualHeight = sender.ActualHeight;
 
@@ -86,9 +88,9 @@ namespace MeterMateUwp
             float outerRectangleLeft = (float)(actualWidth - outerRectangleWidth) / 2;
 
             // Black Background
-            args.DrawingSession.FillCircle(xCenterTopCircle, yCentreTopCircle, outerRadiusTopCircle, Colors.Black);
-            args.DrawingSession.FillRectangle(outerRectangleLeft, outerRectangleTop, outerRectangleWidth, outerRectangleHeight, Colors.Black);
-            args.DrawingSession.FillCircle(xCentreBottomCircle, yCenterBottomCircle, outerRadiusBottomCircle, Colors.Black);
+            canvas.FillCircle(xCenterTopCircle, yCentreTopCircle, outerRadiusTopCircle, Colors.Black);
+            canvas.FillRectangle(outerRectangleLeft, outerRectangleTop, outerRectangleWidth, outerRectangleHeight, Colors.Black);
+            canvas.FillCircle(xCentreBottomCircle, yCenterBottomCircle, outerRadiusBottomCircle, Colors.Black);
 
             float innerRadiusTopCircle = outerRadiusTopCircle - 5f;
 
@@ -100,9 +102,9 @@ namespace MeterMateUwp
             float innerRectangleLeft = (float)(actualWidth - innerRectangleWidth) / 2;
 
             // Inner parts
-            args.DrawingSession.FillCircle(xCenterTopCircle, yCentreTopCircle, innerRadiusTopCircle, Colors.White);
-            args.DrawingSession.FillRectangle(innerRectangleLeft, innerRectangleTop, innerRectangleWidth, innerRectangleHeight, Colors.White);
-            args.DrawingSession.FillCircle(xCentreBottomCircle, yCenterBottomCircle, innerRadiusBottomCircle, Colors.Red);
+            canvas.FillCircle(xCenterTopCircle, yCentreTopCircle, innerRadiusTopCircle, Colors.White);
+            canvas.FillRectangle(innerRectangleLeft, innerRectangleTop, innerRectangleWidth, innerRectangleHeight, Colors.White);
+            canvas.FillCircle(xCentreBottomCircle, yCenterBottomCircle, innerRadiusBottomCircle, Colors.Red);
 
             double usedValue = Temperature;
 
@@ -121,11 +123,11 @@ namespace MeterMateUwp
             float maximumValueLength = valueRectangleBottom - outerRadiusTopCircle;
 
             // Scale
-            args.DrawingSession.FillRectangle(innerRectangleLeft, valueRectangleBottom, innerRectangleWidth, outerRadiusBottomCircle, Colors.Red);
+            canvas.FillRectangle(innerRectangleLeft, valueRectangleBottom, innerRectangleWidth, outerRadiusBottomCircle, Colors.Red);
 
             float valueLength = (float)(maximumValueLength * (Temperature / (MaximumTemperature - MinimumTemperature)));
 
-            args.DrawingSession.FillRectangle(innerRectangleLeft, valueRectangleBottom - valueLength, innerRectangleWidth, valueLength, Colors.Red);
+            canvas.FillRectangle(innerRectangleLeft, valueRectangleBottom - valueLength, innerRectangleWidth, valueLength, Colors.Red);
 
             // Display as text
             string text = string.Format("{0:+#0.0;-#0.0;0.0} °C", Temperature);
@@ -135,12 +137,12 @@ namespace MeterMateUwp
 
             CanvasTextFormat format = new CanvasTextFormat { FontSize = 20f, FontWeight = weight, WordWrapping = CanvasWordWrapping.NoWrap, };
 
-            CanvasTextLayout textLayout = new CanvasTextLayout(args.DrawingSession, text, format, 0.0f, 0.0f);
+            CanvasTextLayout textLayout = new CanvasTextLayout(canvas, text, format, 0.0f, 0.0f);
 
             float xLoc = xCentreBottomCircle - ((float)textLayout.DrawBounds.Width / 2);
             float yLoc = yCenterBottomCircle - ((float)textLayout.DrawBounds.Height);
 
-            args.DrawingSession.DrawTextLayout(textLayout, xLoc, yLoc, Colors.White);
+            canvas.DrawTextLayout(textLayout, xLoc, yLoc, Colors.White);
         }
     }
 }

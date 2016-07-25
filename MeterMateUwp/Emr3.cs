@@ -117,7 +117,7 @@ namespace MeterMateUwp
                         idx = 0;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //Debug.Print("EMR3: Exception " + ex.Message);
                 }
@@ -173,7 +173,7 @@ namespace MeterMateUwp
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //ParentPage.Status.Text = string.Format("Emr3.GetPreset: Exception {0}", ex.Message);
             }
