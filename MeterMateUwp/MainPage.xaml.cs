@@ -118,12 +118,47 @@ namespace MeterMateUwp
             }
         }
 
-        public void ResetTimer()
+        public async Task Emr3ConnectionConnected(bool isConnected)
         {
-            // Display that the handset is connected
-            imageBluetoothDisabled.Visibility = Visibility.Collapsed;
-            imageBluetoothEnabled.Visibility = Visibility.Visible;
-            tbHandsetConnected.Visibility = Visibility.Visible;
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                if (isConnected)
+                {
+                    imageEmr3Disabled.Visibility = Visibility.Collapsed;
+                    imageEmr3Enabled.Visibility = Visibility.Visible;
+                    tbEmr3Connected.Text = "EMR3 Connected";
+                }
+                else
+                {
+                    imageEmr3Disabled.Visibility = Visibility.Visible;
+                    imageEmr3Enabled.Visibility = Visibility.Collapsed;
+                    tbEmr3Connected.Text = "EMR3 Disconnected";
+                }
+            });
+        }
+
+        public async Task BluetoothConnectionConnected(bool isConnected)
+        {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                if (isConnected)
+                {
+                    imageBluetoothDisabled.Visibility = Visibility.Collapsed;
+                    imageBluetoothEnabled.Visibility = Visibility.Visible;
+                    tbHandsetConnected.Text = "Handset Connected";
+                }
+                else
+                {
+                    imageBluetoothDisabled.Visibility = Visibility.Visible;
+                    imageBluetoothEnabled.Visibility = Visibility.Collapsed;
+                    tbHandsetConnected.Text = "Handset Disconnected";
+                }
+            });
+        }
+
+        public async Task ResetTimer()
+        {
+            await BluetoothConnectionConnected(true);
 
             // set the time to trigger every 12 seconds
             timer.Change(12000, 12000);
@@ -133,13 +168,7 @@ namespace MeterMateUwp
 
         private async void TimerExpired(object state)
         {
-            // When the timer expires show that the hadset is no longer connected (by Bluetooth)
-            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-            {
-                imageBluetoothDisabled.Visibility = Visibility.Visible;
-                imageBluetoothEnabled.Visibility = Visibility.Collapsed;
-                tbHandsetConnected.Visibility = Visibility.Collapsed;
-            });
+            await BluetoothConnectionConnected(false);
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
@@ -151,7 +180,7 @@ namespace MeterMateUwp
             txtCopyright.Text = "Swiftsoft - Copyright © 2016";
 
             // Show that the handset by default is not connected
-            tbHandsetConnected.Visibility = Visibility.Collapsed;
+            tbHandsetConnected.Text = "Handset Disconnected";
 
             // Create timer to expire immediately and then every 12 seconds thereafter
             timer = new Timer(TimerExpired, null, 0, 12000);

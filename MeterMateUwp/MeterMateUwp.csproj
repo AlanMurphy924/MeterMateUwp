@@ -120,6 +120,8 @@
   <ItemGroup>
     <Content Include="Assets\BluetoothDisabled.png" />
     <Content Include="Assets\BluetoothEnabled.png" />
+    <Content Include="Assets\Connected.png" />
+    <Content Include="Assets\Disconnected.png" />
     <Content Include="Assets\TickBW128.png" />
     <Content Include="Assets\TickColour128.png" />
     <Content Include="Properties\Default.rd.xml" />

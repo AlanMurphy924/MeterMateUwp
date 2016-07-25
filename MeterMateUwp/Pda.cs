@@ -209,7 +209,7 @@ namespace MeterMateUwp
                             case "Gv":
 
                                 // Get Version.
-                                ParentPage.ResetTimer();
+                                await ParentPage.ResetTimer();
 
                                 json = "{\"Command\": \"Gv\", \"Result\": 0, \"Version\": " + MainPage.MajorVersion + "." + MainPage.MinorVersion + ", \"Model\": \"" + MainPage.Model + "\"}";
 
@@ -260,7 +260,7 @@ namespace MeterMateUwp
                             case "Gtr":
 
                                 // Get transaction record
-                                ParentPage.ResetTimer();
+                                await ParentPage.ResetTimer();
 
                                 if (parts.Length == 2)
                                 {
@@ -282,7 +282,7 @@ namespace MeterMateUwp
                             case "Sp":
 
                                 // Set preset.
-                                ParentPage.ResetTimer();
+                                await ParentPage.ResetTimer();
 
                                 if (parts.Length == 2)
                                 {
@@ -293,7 +293,7 @@ namespace MeterMateUwp
 
                             case "NOP":
 
-                                ParentPage.ResetTimer();
+                                await ParentPage.ResetTimer();
 
                                 json = "{\"Command\": \"NOP\", \"Result\": 0}";
 
