@@ -15,7 +15,7 @@ namespace MeterMateUwp
         {
             get
             {
-                return this.temperature;
+                return temperature;
             }
         }
 
@@ -23,7 +23,7 @@ namespace MeterMateUwp
         {
             get
             {
-                return KelvinToCelsius(this.temperature);
+                return KelvinToCelsius(temperature);
             }
         }
 
@@ -31,7 +31,7 @@ namespace MeterMateUwp
         {
             get
             {
-                return KelvinToFahrenheit(this.temperature);
+                return KelvinToFahrenheit(temperature);
             }
         }
 

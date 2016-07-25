@@ -101,7 +101,7 @@ namespace MeterMateUwp
 
         private static async Task SendMessage(string json)
         {
-            Writer.WriteString((char)STX + json + (char)ETX);
+            Writer.WriteString(string.Format("{0}{1}{2}", (char)STX, json, (char)ETX));
 
             await Writer.StoreAsync();
         }
@@ -110,8 +110,6 @@ namespace MeterMateUwp
         {
             try
             {
-                //ParentPage.Status.Text = string.Empty;
-
                 StringBuilder message = new StringBuilder();
 
                 while (true)
@@ -121,18 +119,20 @@ namespace MeterMateUwp
                     switch (b)
                     {
                         case STX:
+
                             // Start of message
                             message.Clear();
                             continue;
 
                         case ETX:
+                            
                             // End of message
                             await ProcessMessage(message.ToString());
                             message.AppendLine();
-                            //ParentPage.Status.Text += message.ToString();
                             continue;
 
                         default:
+                            
                             // Append on to the message
                             message.Append((char)b);
                             continue;
@@ -155,8 +155,6 @@ namespace MeterMateUwp
 
         private async Task<byte> ReadAsync(CancellationToken cancellationToken)
         {
-            Task<uint> loadAsyncTask;
-
             uint readBufferLength = 1;
 
             // If task cancellation was requested, comply
@@ -166,11 +164,7 @@ namespace MeterMateUwp
             // when one or more bytes is available
             Reader.InputStreamOptions = InputStreamOptions.Partial;
 
-            // Create a task object to wait for data on the serial port input stream
-            loadAsyncTask = Reader.LoadAsync(readBufferLength).AsTask();
-
-            // Launch the task and wait
-            uint bytesRead = await loadAsyncTask;
+            uint bytesRead = await Reader.LoadAsync(readBufferLength);
 
             if (bytesRead > 0)
             {
@@ -207,65 +201,86 @@ namespace MeterMateUwp
                         switch (parts[0])
                         {
                             case "BL":  
+
                                 // Bootloader.
                                 //SystemUpdate.AccessBootloader();
                                 break;
 
                             case "Gv":
+
                                 // Get Version.
                                 ParentPage.ResetTimer();
 
                                 json = "{\"Command\": \"Gv\", \"Result\": 0, \"Version\": " + MainPage.MajorVersion + "." + MainPage.MinorVersion + ", \"Model\": \"" + MainPage.Model + "\"}";
+
                                 break;
 
                             case "Gf":  
+
                                 // Get features.
                                 json = Emr3.GetFeatures();
+
                                 break;
 
-                            case "Gt":  
+                            case "Gt": 
+                                 
                                 // Get temperature.
                                 json = await Emr3.GetTemperature();
+
                                 break;
 
                             case "Gs":  
+
                                 // Get status.
                                 json = await Emr3.GetStatus();
+
                                 break;
 
                             case "Gpl":  
+
                                 // Get preset litres.
                                 json = await Emr3.GetPreset();
+
                                 break;
 
                             case "Grl":  
+
                                 // Get realtime litres.
                                 json = await Emr3.GetRealtime();
+
                                 break;
 
                             case "Gtc":  
+
                                 // Get transaction count
                                 json = await Emr3.GetTranCount();
+
                                 break;
 
                             case "Gtr":
+
                                 // Get transaction record
                                 ParentPage.ResetTimer();
+
                                 if (parts.Length == 2)
                                 {
                                     json = await Emr3.GetTran(parts[1]);
                                 }
+
                                 break;
 
                             case "Spl": 
+
                                 // Set polling.
                                 if (parts.Length == 2)
                                 {
                                     json = Emr3.SetPolling(parts[1]);
                                 }
+
                                 break;
 
                             case "Sp":
+
                                 // Set preset.
                                 ParentPage.ResetTimer();
 
@@ -273,16 +288,21 @@ namespace MeterMateUwp
                                 {
                                     json = await Emr3.SetPreset(parts[1]);
                                 }
+
                                 break;
 
                             case "NOP":
+
                                 ParentPage.ResetTimer();
 
                                 json = "{\"Command\": \"NOP\", \"Result\": 0}";
+
                                 break;
 
                             default:
+
                                 json = "{\"Command\": \"" + parts[0] + "\", \"Result\": -99}";
+
                                 break;
                         }
                     }
