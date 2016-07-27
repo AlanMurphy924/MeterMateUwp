@@ -67,7 +67,7 @@
             <StackPanel Grid.Column="1" Margin="20,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal">
                 <Image x:Name="imageEmr3Disabled" HorizontalAlignment="Right" Height="50" Margin="0,0,0,0" VerticalAlignment="Center" Width="37" Source="Assets/Disconnected.png"/>
                 <Image x:Name="imageEmr3Enabled" Height="50" Margin="0,0,0,0" VerticalAlignment="Center" Source="Assets/Connected.png" RenderTransformOrigin="-0.91,0.345" HorizontalAlignment="Right" Width="37"/>
-                <TextBlock x:Name="tbEmr3Connected" Text="EMR3 Connected" Margin="20,0,0,0" Visibility="Visible" FontSize="24" VerticalAlignment="Center" />
+                <TextBlock x:Name="tbEmr3Connected" Text="EMR3 Disconnected" Margin="20,0,0,0" Visibility="Visible" FontSize="24" VerticalAlignment="Center" />
             </StackPanel>
         </Grid>
 

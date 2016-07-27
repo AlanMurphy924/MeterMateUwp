@@ -181,6 +181,8 @@ namespace MeterMateUwp
 
             // Show that the handset by default is not connected
             tbHandsetConnected.Text = "Handset Disconnected";
+            imageEmr3Disabled.Visibility = Visibility.Visible;
+            imageEmr3Enabled.Visibility = Visibility.Collapsed;
 
             // Create timer to expire immediately and then every 12 seconds thereafter
             timer = new Timer(TimerExpired, null, 0, 12000);
@@ -190,8 +192,9 @@ namespace MeterMateUwp
 
             try
             {
-                meterMatePort = await GetSerialPort("usb serial converter"); // "COM12");
-                bluetoothPort = await GetSerialPort("minwinpc"); // "COM21");
+//                meterMatePort = await GetSerialPort("prolific usb-to-serial comm port");
+                meterMatePort = await GetSerialPort("usb serial converter");
+                bluetoothPort = await GetSerialPort("minwinpc");
             }
             catch (NullReferenceException)
             {

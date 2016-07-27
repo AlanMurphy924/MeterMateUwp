@@ -725,7 +725,7 @@ namespace MeterMateUwp
                     {
                         bytesRead = await reader.LoadAsync(readBufferLength).AsTask(cts.Token);
 
-                        ParentPage.Emr3ConnectionConnected(true);
+                        await ParentPage.Emr3ConnectionConnected(true);
 
                         if (bytesRead > 0)
                         {
@@ -743,7 +743,7 @@ namespace MeterMateUwp
                         Debug.WriteLine("Task was cancelled after timeout");
                         Debug.WriteLine(e.Message);
 
-                        ParentPage.Emr3ConnectionConnected(false);
+                        await ParentPage.Emr3ConnectionConnected(false);
 
                         throw;
                     }
