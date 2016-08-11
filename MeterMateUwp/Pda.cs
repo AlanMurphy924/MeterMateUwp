@@ -85,7 +85,7 @@ namespace MeterMateUwp
         public async void Start()
         {
             // Create the Serial Port
-            SerialPort.BaudRate = 9600;
+            SerialPort.BaudRate = 115200;
             SerialPort.DataBits = 8;
             SerialPort.StopBits = SerialStopBitCount.One;
             SerialPort.Parity = SerialParity.None;
