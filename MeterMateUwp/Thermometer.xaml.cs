@@ -47,14 +47,25 @@ namespace MeterMateUwp
         {
             get
             {
-                return (double)GetValue(TemperatureProperty);
+                var v = GetValue(TemperatureProperty);
+
+                if (v is double)
+                {
+                    return (double)v;
+                }
+
+                return 0.0;
             }
 
             set
             {
-                SetValue(TemperatureProperty, value);
+                // Only redraw the thermometer if the temperature has changed
+                if (Temperature != value)
+                {
+                    SetValue(TemperatureProperty, value);
 
-                myCanvas.Invalidate();
+                    myCanvas.Invalidate();
+                }
             }
         }
 
