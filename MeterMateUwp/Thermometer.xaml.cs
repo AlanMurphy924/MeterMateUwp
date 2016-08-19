@@ -117,18 +117,6 @@ namespace MeterMateUwp
             canvas.FillRectangle(innerRectangleLeft, innerRectangleTop, innerRectangleWidth, innerRectangleHeight, Colors.White);
             canvas.FillCircle(xCentreBottomCircle, yCenterBottomCircle, innerRadiusBottomCircle, Colors.Red);
 
-            double usedValue = Temperature;
-
-            if (usedValue > MaximumTemperature)
-            {
-                usedValue = MaximumTemperature;
-            }
-
-            if (usedValue < MinimumTemperature)
-            {
-                usedValue = MinimumTemperature;
-            }
-
             float valueRectangleBottom = (float)(actualHeight - (2 * outerRadiusBottomCircle));
 
             float maximumValueLength = valueRectangleBottom - outerRadiusTopCircle;
@@ -136,7 +124,7 @@ namespace MeterMateUwp
             // Scale
             canvas.FillRectangle(innerRectangleLeft, valueRectangleBottom, innerRectangleWidth, outerRadiusBottomCircle, Colors.Red);
 
-            float valueLength = (float)(maximumValueLength * (Temperature / (MaximumTemperature - MinimumTemperature)));
+            float valueLength = (float)(maximumValueLength * (Clamp(Temperature, MinimumTemperature, MaximumTemperature) / (MaximumTemperature - MinimumTemperature)));
 
             canvas.FillRectangle(innerRectangleLeft, valueRectangleBottom - valueLength, innerRectangleWidth, valueLength, Colors.Red);
 
@@ -154,6 +142,21 @@ namespace MeterMateUwp
             float yLoc = yCenterBottomCircle - ((float)textLayout.DrawBounds.Height);
 
             canvas.DrawTextLayout(textLayout, xLoc, yLoc, Colors.White);
+        }
+
+        private static double Clamp(double v, double minimum, double maximum)
+        {
+            if (v > maximum)
+            {
+                v = maximum;
+            }
+
+            if (v < minimum)
+            {
+                v = minimum;
+            }
+
+            return v;
         }
     }
 }
