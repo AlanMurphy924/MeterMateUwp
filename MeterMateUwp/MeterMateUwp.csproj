@@ -147,6 +147,16 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Gauges\Gauges\Gauges.csproj">
+      <Project>{6F0EAF60-D93F-4722-8EDB-B4401DD317B5}</Project>
+      <Name>Gauges</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\LedControls\LedControls\LedControls.csproj">
+      <Project>{F2C2CC0B-CAB4-4084-B326-0D8D407392E8}</Project>
+      <Name>LedControls</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

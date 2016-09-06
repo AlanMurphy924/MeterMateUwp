@@ -1,79 +1,49 @@
-﻿<Page
-    x:Class="MeterMateUwp.MainPage"
+﻿<Page 
+    xmlns:my="using:Gauges"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MeterMateUwp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:LedControls="using:LedControls" 
+    x:Class="MeterMateUwp.MainPage"
     mc:Ignorable="d" Loaded="Page_Loaded" Width="800" Height="480">
 
-    <Grid >
-        <Grid.Background>
-            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="#FFFCFCF9"/>
-                <GradientStop Color="#FF919190" Offset="1"/>
-            </LinearGradientBrush>
-        </Grid.Background>
+    <Grid Background="Black" >
 
-        <Grid Margin="30,105,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="390" Height="Auto">
+        <Grid.RenderTransform>
+            <ScaleTransform ScaleX="1.0" ScaleY="1.074"/>
+        </Grid.RenderTransform>
+        
+        <StackPanel Orientation="Vertical">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="txtVersion" Foreground="White" Margin="0,5,0,10" Text="Version" FontSize="24" Height="Auto" Width="Auto" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+            <Grid Margin="0,5,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Grid.Row="0" Text="Preset" VerticalAlignment="Center" FontSize="36" HorizontalAlignment="Left" TextAlignment="Left" Padding="0,0,30,0"/>
-            <TextBlock Grid.Column="1" Grid.Row="0" x:Name="txtPreset" TextAlignment="Right"  TextWrapping="Wrap" Text="0" VerticalAlignment="Center" FontSize="36" HorizontalAlignment="Right" />
-            <TextBlock Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" TextAlignment="Center" Text="L" FontSize="36" Padding="30,0,0,0" HorizontalAlignment="Right"/>
+                <my:PumpingGauge Grid.Column="0"  x:Name="litres" StartAngle="3.927" EndAngle="-0.785" PresetLitres="500" DeliveredLitres="0" HorizontalAlignment="Center" Height="350" VerticalAlignment="Top" Width="350"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="1" Text="Delivered" VerticalAlignment="Center" FontSize="36" HorizontalAlignment="Left" TextAlignment="Left" Padding="0,0,30,0"/>
-            <TextBlock Grid.Column="1" Grid.Row="1" x:Name="txtRealtimeLitres" TextAlignment="Right"  TextWrapping="Wrap" Text="0" VerticalAlignment="Center" FontSize="36" HorizontalAlignment="Right"/>
-            <TextBlock Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" TextAlignment="Right" Text="L" FontSize="36" Padding="30,0,0,0" HorizontalAlignment="Right"/>
-        </Grid>
+                <StackPanel Grid.Column="1" Orientation="Vertical">
 
-        <local:Thermometer x:Name="fuelTemperature" MinimumTemperature="0.0" MaximumTemperature="40.0" Temperature="15.0" HorizontalAlignment="Right" Width="113" Margin="0,20,40,20" />
+                    <my:ThermometerGauge x:Name="fuelTemperature" Temperature="0.0"  ForegroundColor="Red" StartAngle="3.927" EndAngle="-0.785"  MinimumTemperature="0.0" MaximumTemperature="40.0" Height="175" Width="175" HorizontalAlignment="Center" VerticalAlignment="Top" />
 
-        <StackPanel CornerRadius="20" Background="Wheat" BorderBrush="Black" BorderThickness="2" Orientation="Vertical" Margin="30,266,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <StackPanel Padding="5" Orientation="Horizontal">
-                <Image x:Name="imgFlowing" HorizontalAlignment="Right" Height="35" VerticalAlignment="Center" Width="35" Source="Assets/TickColour128.png" Visibility="Collapsed"/>
-                <Image x:Name="imgFlowingDisabled" HorizontalAlignment="Right" Height="35" VerticalAlignment="Center" Width="35" Source="Assets/TickBW128.png"/>
-                <TextBlock Text="Product Flowing" FontSize="24" Margin="20,0,0,0" VerticalAlignment="Center" />
-            </StackPanel>
-            <StackPanel Padding="5" Orientation="Horizontal">
-                <Image x:Name="imgDelivering" HorizontalAlignment="Right" Height="35" VerticalAlignment="Center" Width="35" Source="Assets/TickColour128.png" Visibility="Collapsed"/>
-                <Image x:Name="imgDeliveringDisabled" HorizontalAlignment="Right" Height="35" VerticalAlignment="Center" Width="35" Source="Assets/TickBW128.png"/>
-                <TextBlock Text="Delivering" FontSize="24" Margin="20,0,0,0" VerticalAlignment="Center" />
-            </StackPanel>
+                    <StackPanel Margin="80,0,0,0" Width="Auto">
+                        <LedControls:SimpleLed x:Name="ledHandsetConnected" Height="30" FontSize="24" HorizontalAlignment="Left" Foreground="White" BorderColor="White" OffColor="DarkSlateGray" OnColor="Lime" Text="Handset Connected" Margin="0,6,0,0" VerticalAlignment="Top" Width="Auto"/>
+                        <LedControls:SimpleLed x:Name="ledEmr3Connected" Height="30" FontSize="24" HorizontalAlignment="Left" Foreground="White" BorderColor="White" OffColor="DarkSlateGray" OnColor="Lime" Text="EMR3 Connected" Margin="0,6,0,0" VerticalAlignment="Top" Width="Auto"/>
+                        <LedControls:SimpleLed x:Name="ledProductFlowing" Height="30" FontSize="24" HorizontalAlignment="Left" Foreground="White" BorderColor="White" OffColor="DarkSlateGray" OnColor="Lime" Text="Product Flowing" Margin="0,20,0,0" VerticalAlignment="Top" Width="Auto"/>
+                        <LedControls:SimpleLed x:Name="ledProductDelivering" Height="30" FontSize="24" HorizontalAlignment="Left" Foreground="White" BorderColor="White" OffColor="DarkSlateGray" OnColor="Lime" Text="Delivering" Margin="0,6,0,0" VerticalAlignment="Top" Width="Auto"/>
+                    </StackPanel>
+
+                </StackPanel>
+            </Grid>
+
+            <TextBlock x:Name="txtCopyright" Foreground="White" Margin="0,10,0,0" TextWrapping="Wrap" Text="Copyright" TextAlignment="Center" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="Auto" FontSize="12"/>
         </StackPanel>
 
-        <Grid  Margin="30,20,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="592" Height="Auto">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
-            
-            <StackPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top"  Orientation="Horizontal">
-                <Image x:Name="imageBluetoothDisabled" HorizontalAlignment="Right" Height="50" Margin="0,0,0,0" VerticalAlignment="Center" Width="37" Source="Assets/BluetoothDisabled.png"/>
-                <Image x:Name="imageBluetoothEnabled" Height="50" Margin="0,0,0,0" VerticalAlignment="Center" Source="Assets/BluetoothEnabled.png" RenderTransformOrigin="-0.91,0.345" HorizontalAlignment="Right" Width="37"/>
-                <TextBlock x:Name="tbHandsetConnected" Text="Handset Connected" Margin="20,0,20,0" Visibility="Visible" FontSize="24" VerticalAlignment="Center" />
-            </StackPanel>
-
-            <StackPanel Grid.Column="1" Margin="20,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal">
-                <Image x:Name="imageEmr3Disabled" HorizontalAlignment="Right" Height="50" Margin="0,0,0,0" VerticalAlignment="Center" Width="37" Source="Assets/Disconnected.png"/>
-                <Image x:Name="imageEmr3Enabled" Height="50" Margin="0,0,0,0" VerticalAlignment="Center" Source="Assets/Connected.png" RenderTransformOrigin="-0.91,0.345" HorizontalAlignment="Right" Width="37"/>
-                <TextBlock x:Name="tbEmr3Connected" Text="EMR3 Disconnected" Margin="20,0,0,0" Visibility="Visible" FontSize="24" VerticalAlignment="Center" />
-            </StackPanel>
-        </Grid>
-
-        <TextBlock x:Name="txtVersion" Margin="30,0,0,30" Text="Version" FontSize="24" Height="Auto" Width="356" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
-
-        <TextBlock x:Name="txtCopyright" Margin="0,0,0,5" TextWrapping="Wrap" Text="Copyright" TextAlignment="Center" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="Auto" FontSize="12"/>
-
     </Grid>
+    
 </Page>

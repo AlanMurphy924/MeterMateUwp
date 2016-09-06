@@ -169,7 +169,11 @@ namespace MeterMateUwp
                         jsonBody = string.Format("\"Result\": 0, \"Litres\": {0}", presetLitres);
 
                         // Update the preset litres displayed on screen
-                        ParentPage.PresetLitres.Text = presetLitres.ToString("#,##0");
+                        await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                        {
+                            ParentPage.Pumping.PresetLitres = presetLitres;
+                        });
+                        //ParentPage.PresetLitres.Text = presetLitres.ToString("#,##0");
                     }
                 }
             }
@@ -205,10 +209,10 @@ namespace MeterMateUwp
                         jsonBody = "\"Result\": 0, \"Litres\": " + litres;
 
                         // Only update the pumped litres if product is actually being pumped
-                        if (ParentPage.ProductDelivering.Visibility == Visibility.Visible)
+                        if (ParentPage.ProductDelivering.LedOn)
                         {
                             // Update the realtime litres displayed on screen
-                            ParentPage.RealtimeLitres.Text = litres.ToString("#,##0");
+                            ParentPage.Pumping.DeliveredLitres = litres;
                         }
                     }
                 }
@@ -271,29 +275,11 @@ namespace MeterMateUwp
 
                         InDeliveryMode = newInDeliveryMode;
 
-                        if (InDeliveryMode)
-                        {
-                            ParentPage.ProductDelivering.Visibility = Visibility.Visible;
-                            ParentPage.ProductNotDelivering.Visibility = Visibility.Collapsed;
-                        }
-                        else
-                        {
-                            ParentPage.ProductDelivering.Visibility = Visibility.Collapsed;
-                            ParentPage.ProductNotDelivering.Visibility = Visibility.Visible;
-                        }
+                        ParentPage.ProductDelivering.LedOn = InDeliveryMode;
 
                         ProductFlowing = newProductFlowing;
 
-                        if (ProductFlowing)
-                        {
-                            ParentPage.ProductFlowing.Visibility = Visibility.Visible;
-                            ParentPage.ProductNotFlowing.Visibility = Visibility.Collapsed;
-                        }
-                        else
-                        {
-                            ParentPage.ProductFlowing.Visibility = Visibility.Collapsed;
-                            ParentPage.ProductNotFlowing.Visibility = Visibility.Visible;
-                        }
+                        ParentPage.ProductFlowing.LedOn = ProductFlowing;
 
                         MeterError = ((reply[2] & 0x40) == 0x40);
                         InCalibration = ((reply[2] & 0x80) == 0x80);
@@ -586,7 +572,8 @@ namespace MeterMateUwp
                         }
 
                         // Preset has just been set, therefore set the pumped litres to zero
-                        ParentPage.RealtimeLitres.Text = "0";
+                        ParentPage.Pumping.DeliveredLitres = 0;
+                        //ParentPage.RealtimeLitres.Text = "0";
                     }
                 }
             }

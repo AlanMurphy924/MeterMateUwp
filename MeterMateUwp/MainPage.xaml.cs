@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Gauges;
+using LedControls;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -27,7 +29,7 @@ namespace MeterMateUwp
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public const int MajorVersion = 2;
+        public const int MajorVersion = 3;
         public const int MinorVersion = 0;
         public const string Model = "EMR3";
 
@@ -62,7 +64,7 @@ namespace MeterMateUwp
             return null;
         }
 
-        public Thermometer Thermometer
+        public ThermometerGauge Thermometer
         {
             get
             {
@@ -70,51 +72,43 @@ namespace MeterMateUwp
             }
         }
 
-        public TextBlock PresetLitres
+        public PumpingGauge Pumping
         {
             get
             {
-                return this.txtPreset;
+                return this.litres;
             }
         }
 
-        public TextBlock RealtimeLitres
+        public SimpleLed ProductDelivering
         {
             get
             {
-                return this.txtRealtimeLitres;
+                return ledProductDelivering;
             }
         }
 
-        public Image ProductFlowing
+        public SimpleLed ProductFlowing
         {
             get
             {
-                return imgFlowing;
+                return ledProductFlowing;
             }
         }
 
-        public Image ProductNotFlowing
+        public SimpleLed HandsetConnected
         {
             get
             {
-                return imgFlowingDisabled;
+                return ledHandsetConnected;
             }
         }
 
-        public Image ProductDelivering
+        public SimpleLed EmrConnected
         {
             get
             {
-                return imgDelivering;
-            }
-        }
-
-        public Image ProductNotDelivering
-        {
-            get
-            {
-                return imgDeliveringDisabled;
+                return ledEmr3Connected;
             }
         }
 
@@ -122,18 +116,7 @@ namespace MeterMateUwp
         {
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                if (isConnected)
-                {
-                    imageEmr3Disabled.Visibility = Visibility.Collapsed;
-                    imageEmr3Enabled.Visibility = Visibility.Visible;
-                    tbEmr3Connected.Text = "EMR3 Connected";
-                }
-                else
-                {
-                    imageEmr3Disabled.Visibility = Visibility.Visible;
-                    imageEmr3Enabled.Visibility = Visibility.Collapsed;
-                    tbEmr3Connected.Text = "EMR3 Disconnected";
-                }
+                ledEmr3Connected.LedOn = isConnected;
             });
         }
 
@@ -141,18 +124,7 @@ namespace MeterMateUwp
         {
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                if (isConnected)
-                {
-                    imageBluetoothDisabled.Visibility = Visibility.Collapsed;
-                    imageBluetoothEnabled.Visibility = Visibility.Visible;
-                    tbHandsetConnected.Text = "Handset Connected";
-                }
-                else
-                {
-                    imageBluetoothDisabled.Visibility = Visibility.Visible;
-                    imageBluetoothEnabled.Visibility = Visibility.Collapsed;
-                    tbHandsetConnected.Text = "Handset Disconnected";
-                }
+                ledHandsetConnected.LedOn = isConnected;
             });
         }
 
@@ -180,9 +152,8 @@ namespace MeterMateUwp
             txtCopyright.Text = "Swiftsoft - Copyright © 2016";
 
             // Show that the handset by default is not connected
-            tbHandsetConnected.Text = "Handset Disconnected";
-            imageEmr3Disabled.Visibility = Visibility.Visible;
-            imageEmr3Enabled.Visibility = Visibility.Collapsed;
+            ledHandsetConnected.LedOn = false;
+            ledEmr3Connected.LedOn = false;
 
             // Create timer to expire immediately and then every 12 seconds thereafter
             timer = new Timer(TimerExpired, null, 0, 12000);
