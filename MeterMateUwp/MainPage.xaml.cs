@@ -149,7 +149,7 @@ namespace MeterMateUwp
             txtVersion.Text = string.Format("MeterMate {0} V{1}.{2}", Model, MajorVersion, MinorVersion);
 
             // Display the Copyright notice
-            txtCopyright.Text = "Swiftsoft - Copyright © 2016";
+            txtCopyright.Text = "Swiftsoft - Copyright © 2016-2017";
 
             // Show that the handset by default is not connected
             ledHandsetConnected.LedOn = false;
