@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.Devices.Gpio;
 using Windows.Devices.SerialCommunication;
 using Windows.Storage;
 using Windows.Storage.Streams;
@@ -277,9 +278,19 @@ namespace MeterMateUwp
 
                         ParentPage.ProductDelivering.LedOn = InDeliveryMode;
 
+                        if (ParentPage.DeliveringPin != null)
+                        {
+                            ParentPage.DeliveringPin.Write(InDeliveryMode ? GpioPinValue.Low : GpioPinValue.High);
+                        }
+
                         ProductFlowing = newProductFlowing;
 
                         ParentPage.ProductFlowing.LedOn = ProductFlowing;
+
+                        if (ParentPage.FlowingPin != null)
+                        {
+                            ParentPage.FlowingPin.Write(ProductFlowing ? GpioPinValue.Low : GpioPinValue.High);
+                        }
 
                         MeterError = ((reply[2] & 0x40) == 0x40);
                         InCalibration = ((reply[2] & 0x80) == 0x80);
