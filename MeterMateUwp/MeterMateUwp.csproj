@@ -101,6 +101,7 @@
     <Compile Include="Async.cs" />
     <Compile Include="ConverterExtensions.cs" />
     <Compile Include="Emr3.cs" />
+    <Compile Include="GpioAccess.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

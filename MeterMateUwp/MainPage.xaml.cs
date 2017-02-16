@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Gpio;
+using Windows.Devices.I2c;
 using Windows.Devices.SerialCommunication;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -32,15 +33,8 @@ namespace MeterMateUwp
     {
         private const int EMR_CONNECTED_LED_PIN = 5;
         private const int BT_CONNECTED_PIN = 6;
-        private const int DELIVERING_PIN = 13;
-        private const int FLOWING_PIN = 19;
-
-        private GpioPin pinEmrConnected;
-        private GpioPin pinBtConnected;
-        private GpioPin pinDelivering;
-        private GpioPin pinFlowing;
-
-        private GpioPinValue pinValue;
+        public const int DELIVERING_PIN = 13;
+        public const int FLOWING_PIN = 19;
 
         public const int MajorVersion = 3;
         public const int MinorVersion = 0;
@@ -53,51 +47,12 @@ namespace MeterMateUwp
             InitGpio();
         }
 
-        public GpioPin DeliveringPin
-        {
-            get
-            {
-                return pinDelivering;
-            }
-        }
-
-        public GpioPin FlowingPin
-        {
-            get
-            {
-                return pinFlowing;
-            }
-        }
-
         private void InitGpio()
         {
-            var gpio = GpioController.GetDefault();
-
-            if (gpio == null)
-            {
-                pinEmrConnected = null;
-                pinBtConnected = null;
-                pinFlowing = null;
-                pinDelivering = null;
-
-                return;
-            }
-
-            pinEmrConnected = gpio.OpenPin(EMR_CONNECTED_LED_PIN);
-            pinEmrConnected.Write(GpioPinValue.High);
-            pinEmrConnected.SetDriveMode(GpioPinDriveMode.Output);
-
-            pinBtConnected = gpio.OpenPin(BT_CONNECTED_PIN);
-            pinBtConnected.Write(GpioPinValue.High);
-            pinBtConnected.SetDriveMode(GpioPinDriveMode.Output);
-
-            pinDelivering = gpio.OpenPin(DELIVERING_PIN);
-            pinDelivering.Write(GpioPinValue.High);
-            pinDelivering.SetDriveMode(GpioPinDriveMode.Output);
-
-            pinFlowing = gpio.OpenPin(FLOWING_PIN);
-            pinFlowing.Write(GpioPinValue.High);
-            pinFlowing.SetDriveMode(GpioPinDriveMode.Output);
+            GpioAccess.AddPin(EMR_CONNECTED_LED_PIN);
+            GpioAccess.AddPin(BT_CONNECTED_PIN);
+            GpioAccess.AddPin(FLOWING_PIN);
+            GpioAccess.AddPin(DELIVERING_PIN);
         }
 
         private async Task<SerialDevice> GetSerialPort(string portName)
@@ -180,9 +135,11 @@ namespace MeterMateUwp
             {
                 ledEmr3Connected.LedOn = isConnected;
 
-                if (pinEmrConnected != null)
+                var pin = GpioAccess.Pins[EMR_CONNECTED_LED_PIN];
+
+                if (pin != null)
                 {
-                    pinEmrConnected.Write(isConnected ? GpioPinValue.Low : GpioPinValue.High);
+                    pin.Write(isConnected ? GpioPinValue.Low : GpioPinValue.High);
                 }
             });
         }
@@ -193,9 +150,11 @@ namespace MeterMateUwp
             {
                 ledHandsetConnected.LedOn = isConnected;
 
-                if (pinBtConnected != null)
+                var pin = GpioAccess.Pins[BT_CONNECTED_PIN];
+
+                if (pin != null)
                 {
-                    pinBtConnected.Write(isConnected ? GpioPinValue.Low : GpioPinValue.High);
+                    pin.Write(isConnected ? GpioPinValue.Low : GpioPinValue.High);
                 }
             });
         }

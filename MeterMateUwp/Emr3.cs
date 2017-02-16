@@ -278,18 +278,22 @@ namespace MeterMateUwp
 
                         ParentPage.ProductDelivering.LedOn = InDeliveryMode;
 
-                        if (ParentPage.DeliveringPin != null)
+                        var deliveringPin = GpioAccess.Pins[MainPage.DELIVERING_PIN];
+
+                        if (deliveringPin != null)
                         {
-                            ParentPage.DeliveringPin.Write(InDeliveryMode ? GpioPinValue.Low : GpioPinValue.High);
+                            deliveringPin.Write(InDeliveryMode ? GpioPinValue.Low : GpioPinValue.High);
                         }
 
                         ProductFlowing = newProductFlowing;
 
                         ParentPage.ProductFlowing.LedOn = ProductFlowing;
 
-                        if (ParentPage.FlowingPin != null)
+                        var flowingPin = GpioAccess.Pins[MainPage.FLOWING_PIN];
+
+                        if (flowingPin != null)
                         {
-                            ParentPage.FlowingPin.Write(ProductFlowing ? GpioPinValue.Low : GpioPinValue.High);
+                            flowingPin.Write(ProductFlowing ? GpioPinValue.Low : GpioPinValue.High);
                         }
 
                         MeterError = ((reply[2] & 0x40) == 0x40);
