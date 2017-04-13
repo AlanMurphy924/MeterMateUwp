@@ -209,7 +209,7 @@ namespace MeterMateUwp
                             case "Gv":
 
                                 // Get Version.
-                                await ParentPage.ResetTimer();
+                                //await ParentPage.ResetTimer();
 
                                 json = "{\"Command\": \"Gv\", \"Result\": 0, \"Version\": " + MainPage.MajorVersion + "." + MainPage.MinorVersion + ", \"Model\": \"" + MainPage.Model + "\"}";
 

@@ -111,9 +111,14 @@ namespace MeterMateUwp
                             // Poll meter for current temperature.
                             await Pda.ProcessMessage("Gt");
                             break;
+
+                        case 3:
+                            // Poll MeterMate for Version/Model
+                            await Pda.ProcessMessage("Gv");
+                            break;
                     }
 
-                    if (++idx == 3)
+                    if (++idx == 4)
                     {
                         idx = 0;
                     }
