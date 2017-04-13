@@ -195,7 +195,8 @@ namespace MeterMateUwp
             try
             {
                 // meterMatePort = await GetSerialPort("prolific usb-to-serial comm port");
-                meterMatePort = await GetSerialPort("usb serial converter");
+                //meterMatePort = await GetSerialPort("usb serial converter");
+                meterMatePort = await GetSerialPort("USB-RS232 Cable");
                 //meterMatePort = await GetSerialPort("usb <-> serial");
                 //meterMatePort = await GetSerialPort("cp2102 usb to uart bridge controller");
                 bluetoothPort = await GetSerialPort("minwinpc");
