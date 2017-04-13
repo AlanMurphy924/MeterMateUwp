@@ -189,7 +189,7 @@ namespace MeterMateUwp
                     // not then wait until it is.
                     while (!Emr3.IsRunning())
                     {
-                        await Task.Delay(TimeSpan.FromMilliseconds(250));
+                        await Task.Delay(250);
                     }
 
                     // Split the message around commas.
