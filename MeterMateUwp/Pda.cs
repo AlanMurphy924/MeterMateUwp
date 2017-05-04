@@ -209,10 +209,8 @@ namespace MeterMateUwp
                             case "Gv":
 
                                 // Get Version.
-                                //await ParentPage.ResetTimer();
-
-                                json = "{\"Command\": \"Gv\", \"Result\": 0, \"Version\": " + MainPage.MajorVersion + "." + MainPage.MinorVersion + ", \"Model\": \"" + MainPage.Model + "\"}";
-
+                                await ParentPage.ResetTimer();
+                                json = string.Format("{{\"Command\": \"Gv\", \"Result\": 0, \"Version\": {0}.{1}, \"Model\":\"{2}\"}}", MainPage.MajorVersion, MainPage.MinorVersion, MainPage.Model);
                                 break;
 
                             case "Gf":  
@@ -301,7 +299,7 @@ namespace MeterMateUwp
 
                             default:
 
-                                json = "{\"Command\": \"" + parts[0] + "\", \"Result\": -99}";
+                                json = string.Format("{{\"Command\": \"{0}\", \"Result\": -99}}", parts[0]);
 
                                 break;
                         }

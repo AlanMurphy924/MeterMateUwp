@@ -112,13 +112,13 @@ namespace MeterMateUwp
                             await Pda.ProcessMessage("Gt");
                             break;
 
-                        case 3:
-                            // Poll MeterMate for Version/Model
-                            await Pda.ProcessMessage("Gv");
-                            break;
+                        //case 3:
+                        //    // Poll MeterMate for Version/Model
+                        //    await Pda.ProcessMessage("Gv");
+                        //    break;
                     }
 
-                    if (++idx == 4)
+                    if (++idx == 3)
                     {
                         idx = 0;
                     }
