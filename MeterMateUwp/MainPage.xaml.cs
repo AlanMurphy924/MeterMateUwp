@@ -63,6 +63,8 @@ namespace MeterMateUwp
             // Find all the serial ports
             var devices = await DeviceInformation.FindAllAsync(deviceSelector);
 
+            var deviceList = devices.ToList();
+
             // If the are any devices found, attempt to find the one required
             if (devices.Count > 0)
             {
@@ -70,7 +72,8 @@ namespace MeterMateUwp
                 foreach (var device in devices)
                 {
                     // If the device name matches return the serial device
-                    if (string.Compare(device.Name, portName, true) == 0)
+                    if (device.Name.StartsWith(portName, StringComparison.CurrentCultureIgnoreCase))
+                    //if (string.Compare(device.Name, portName, true) == 0)
                     {
                         return await SerialDevice.FromIdAsync(device.Id);
                     }
@@ -197,9 +200,21 @@ namespace MeterMateUwp
                 // meterMatePort = await GetSerialPort("prolific usb-to-serial comm port");
                 //meterMatePort = await GetSerialPort("usb serial converter");
                 meterMatePort = await GetSerialPort("USB-RS232 Cable");
+
+                if (meterMatePort == null)
+                {
+                    meterMatePort = await GetSerialPort("usb serial converter");
+                }
+
                 //meterMatePort = await GetSerialPort("usb <-> serial");
                 //meterMatePort = await GetSerialPort("cp2102 usb to uart bridge controller");
-                bluetoothPort = await GetSerialPort("minwinpc");
+
+                bluetoothPort = await GetSerialPort("nfo");
+
+                if (bluetoothPort == null)
+                {
+                    bluetoothPort = await GetSerialPort("minwinpc");
+                }
             }
             catch (NullReferenceException)
             {

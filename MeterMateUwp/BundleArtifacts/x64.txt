@@ -1,0 +1,2 @@
+MainPackage=C:\Users\Alan\Documents\Visual Studio 2015\Projects\MeterMateUwp\MeterMateUwp\bin\x64\Debug\MeterMateUwp_3.0.0.0_x64_Debug.appx
+SymbolPackage=C:\Users\Alan\Documents\Visual Studio 2015\Projects\MeterMateUwp\MeterMateUwp\AppPackages\MeterMateUwp_3.0.0.0_Debug_Test\MeterMateUwp_3.0.0.0_x64_Debug.appxsym
